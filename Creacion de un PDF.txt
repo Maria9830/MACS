@@ -1,0 +1,75 @@
+CREACION DE UN ARCHIVO PDF, TITULO, TEXTO, IMAGENES Y UNA LISTA CON VIÑETAS
+TRABAJO REALIZADO EN EL LENGUAJE JAVA CON EL IDE NETBEANS
+                                                                            
+*****************************************************************************
+
+package capitulo1;
+
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import static com.itextpdf.kernel.pdf.PdfName.I;
+import static com.itextpdf.kernel.pdf.PdfName.Image;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.List;
+import com.itextpdf.layout.element.ListItem;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Tab;
+import com.itextpdf.layout.element.TabStop;
+import com.itextpdf.layout.property.TabAlignment;
+import java.io.IOException;
+
+/**
+ *
+ * @author mikie
+ */
+public class Ejemplo3 {
+    public static final String COMPUTADORA = "C:\\Users\\mikie\\OneDrive\\Escritorio\\metodos\\pc.jpg";
+    public static final String SOFTWARE = "C:\\Users\\mikie\\OneDrive\\Escritorio\\metodos\\programa.png";
+    
+     public static final String DEST = "C:\\Users\\mikie\\OneDrive\\Escritorio\\metodos\\software2.pdf";
+    
+    public static void main(String[]args)throws IOException{
+      new Ejemplo3().crearPdf(DEST);
+        
+    }
+    /*Ruta en la cual se escribira el pdf */
+    public void crearPdf(String dest) throws IOException{
+        PdfWriter writer = new PdfWriter(dest);
+        PdfDocument pdf = new PdfDocument(writer); /*Gestiona y ordena el contenido que se le de al pdf*/
+        Document document = new Document(pdf); /*Para el diseño del pdf, por ejemplo el texto */
+        
+        Image software = new Image(ImageDataFactory.create(SOFTWARE)); /*Pasamos la ruta de la imagen para que pueda ser leida por la libreria*/
+        Image computadora = new Image(ImageDataFactory.create(COMPUTADORA));
+       
+        
+         PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ITALIC);/*Instanciar una fuente de texto, tipo de letra*/
+         document.add(new Paragraph("METODOS AVANZADOS PARA LA CREACION DE SOFTWARE").setFont(font)); /*Insertar un titulo */
+         
+        Paragraph p = new Paragraph("COMPUTADORA CUANTICA HIPER VELOZ, CORRE EL ANDROID STUDIO")
+                .add(computadora)
+                .add("EL SOFTWARE MAS ACTUALIZADO")
+                .add(software);   /*Crear un parrafo e imagenes */
+     
+        List list = new List().setSymbolIndent(12).setListSymbol("\u2022").setFont(font); /*Creamos la lista con list, 
+        con el metodo siguiente estamos diciendo se hagan 12 espacios o sea una viñeta bajo la otra,
+        siguiente el simbolo d ela viñeta*/
+        
+        list.add(new ListItem("Windows 10"))
+                .add(new ListItem("Disco Duro 50GB"))
+                .add(new ListItem("Pantalla 32 pulgadas"))
+                .add(new ListItem("64 bits"))
+                .add(new ListItem("AMD9"));
+        
+        
+        document.add(p); /*Funcion para agregar a el documento el texto y las imagenes */
+        document.add(list);/*Funcion para agregar la lista al documento */
+        document.close(); /*Terminar el parro ya escrito anteriormente */
+        
+        
+    }
+}
